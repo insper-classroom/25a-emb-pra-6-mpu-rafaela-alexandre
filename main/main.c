@@ -5,6 +5,8 @@
 
 #include "pico/stdlib.h"
 #include <stdio.h>
+#include <stdlib.h>
+
 
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
@@ -102,22 +104,25 @@ void mpu6050_task(void *p) {
 
         adc_t x;
         x.axis = 0;
-        x.val = (int) euler.angle.roll ;
+        x.val = euler.angle.roll ;
         // printf("X value: %d\n", x.val);
 
         adc_t y;
         y.axis = 1;
-        y.val = (int) euler.angle.pitch ;
+        y.val = euler.angle.pitch ;
         // printf("Y value: %d\n", y.val);
 
-        adc_t z;
-        z.axis = 1;
-        z.val = (int) euler.angle.yaw ;
-        // printf("Y value: %d\n", z.val);
+        adc_t acel_x;
+        acel_x.axis = 2; 
+        acel_x.val = (accelerometer.axis.x * 100); 
+        // printf("Aceleração X value: %d\n", acel_x.val);
 
         xQueueSend(xQueueADC, &x, 0);
         xQueueSend(xQueueADC, &y, 0);
-        xQueueSend(xQueueADC, &z, 0);
+        if ( abs(acel_x.val) >150){
+            xQueueSend(xQueueADC, &acel_x, 0);
+
+        }
         vTaskDelay(pdMS_TO_TICKS(10));
     }
     // while(1) {

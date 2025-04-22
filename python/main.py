@@ -14,6 +14,9 @@ def move_mouse(axis, value):
         pyautogui.moveRel(value, 0)
     elif axis == 1:
         pyautogui.moveRel(0, value)
+        
+    elif axis == 2:
+        pyautogui.click()
 
 def controle(ser):
     """
@@ -103,7 +106,7 @@ def conectar_porta( port_name, root, botao_conectar, status_label, mudar_cor_cir
 def criar_janela():
     root = tk.Tk()
     root.title("Controle de Mouse")
-    root.geometry("400x250")
+    root.geometry("800x500")
     root.resizable(False, False)
 
     # Dark mode color settings
